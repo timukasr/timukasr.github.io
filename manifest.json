@@ -1,0 +1,25 @@
+{
+	"name": "Monkey app",
+	"short_name": "Monkey app",
+	"icons": [
+		{
+			"src": "assets/96.png",
+			"sizes": "96x96",
+			"type": "image/png"
+		},
+		{
+			"src": "assets/144.png",
+			"sizes": "144x144",
+			"type": "image/png"
+		},
+		{
+			"src": "assets/192.png",
+			"sizes": "192x192",
+			"type": "image/png"
+		}
+	],
+	"start_url": "/",
+	"display": "standalone",
+	"background_color": "#A26027",
+	"theme_color": "#A26027"
+}

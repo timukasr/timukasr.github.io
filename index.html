@@ -2,9 +2,37 @@
 <html lang="en">
 <head>
 	<meta charset="UTF-8">
-	<title>Test</title>
+
+	<meta name="description" content="A dancing monkey.">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Monkey app</title>
+
+	<link rel="manifest" href="manifest.json">
+
+	<meta name="mobile-web-app-capable" content="yes">
+	<meta name="application-name" content="Monkey app">
+	<link rel="icon" sizes="192x192" href="/assets/192.png">
+
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="apple-mobile-web-app-status-bar-style" content="black">
+	<meta name="apple-mobile-web-app-title" content="Monkey app">
+	<link rel="apple-touch-icon" href="/assets/192.png">
+
+	<meta name="msapplication-TileImage" content="/assets/144.png">
+	<meta name="msapplication-TileColor" content="#A26027">
+
+	<meta name="theme-color" content="#A26027">
+
+	<link rel="stylesheet" href="/main.css">
 </head>
 <body>
-<h1>Hello world!</h1>
+<div id="main">
+	<img src="/assets/monkey.gif">
+</div>
+<script>
+	if ('serviceWorker' in navigator) {
+		navigator.serviceWorker.register('/sw.js');
+	}
+</script>
 </body>
 </html>

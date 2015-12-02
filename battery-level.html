@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>BLE Battery Level demo</title>
+	<meta name="description" content="Retrieves battery level of nearby BLE devices">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+<button id="button">read device info</button>
+<button id="battery">get battery level</button>
+<div id="battery-level"></div>
+<script>
+	var button = document.getElementById('button');
+	button.addEventListener('click', doBluetooth.bind(this, false));
+	document.getElementById('battery').addEventListener('click', doBluetooth.bind(this, true));
+
+	var serviceUuid = 'battery_service';//0x180F;
+	var charUuid = 0x2A19;
+
+	function doBluetooth(getBattery) {
+		navigator.bluetooth.requestDevice({ filters: [{ services: [serviceUuid] }] })
+			.then(device => {
+			if (getBattery) {
+				return device.connectGATT()
+						.then(server => server.getPrimaryService(serviceUuid))
+			.then(service => {
+					console.log('get characteristicts', typeof charUuid === 'number' ? charUuid.toString(16) : charUuid);
+
+				return service.getCharacteristic('battery_level')
+			})
+				//.then(characteristics => {
+				//	console.log('writing value')
+				//	var resetEnergyExpended = new Uint8Array([9]);
+				//	return characteristics.writeValue(resetEnergyExpended).then(() => characteristics);
+				//})
+			.then(characteristics => {
+					console.log('reading value')
+				return characteristics.readValue()
+				//debugger
+			})
+			.then(buffer => {
+					var data = new DataView(buffer);
+				document.getElementById('battery-level').innerHTML = 'Battery level: ' + data.getUint8(0) + '%'
+			})
+			} else {
+				var data = {
+					adData: {
+						rssi: device.adData.rssi,
+						txPower: device.adData.txPower,
+					},
+					deviceClass: device.deviceClass,
+					id: device.id,
+					name: device.name,
+					paired: device.paired,
+					productId: device.productId,
+					uuids: device.uuids,
+					vendorID: device.vendorID,
+					vendorIDSOurce: device.vendorIDSource,
+				};
+		document.getElementById('battery-level').innerHTML = '<pre>' + JSON.stringify(data, null, '    ') + '</pre>';
+	}
+	})
+	.catch(error => {
+			document.getElementById('battery-level').innerHTML = 'Error: ' + error;
+		console.log(error);
+	});
+	}
+</script>
+</body>
+</html>
